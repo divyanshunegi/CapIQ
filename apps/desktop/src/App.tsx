@@ -1,62 +1,35 @@
-import { useState } from 'react';
-import logo from './assets/images/logo.svg';
+import Navigation from './components/Navigation';
+import Hero from './components/Hero';
+import Stats from './components/Stats';
+import Activity from './components/Activity';
+import ActionButtons from './components/ActionButtons';
+import Footer from './components/Footer';
 
 const App = () => {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="text-center selection:bg-green-900">
-      <header className="flex min-h-screen flex-col items-center justify-center bg-[#282c34] text-white">
-        <img
-          src={logo}
-          className="animate-speed h-60 motion-safe:animate-spin"
-          alt="logo"
-        />
-        <style>
-          {
-            '\
-            .animate-speed{\
-              animation-duration:20s;\
-            }\
-          '
-          }
-        </style>
-        <p className="bg-gradient-to-r from-emerald-300 to-sky-300 bg-clip-text text-5xl font-black text-transparent selection:bg-transparent">
-          Vite + React + Typescript + Tailwindcss
-        </p>
-        <p className="mt-3">
-          <button
-            type="button"
-            className="my-6 rounded bg-gray-300 px-2 py-2 text-[#282C34] transition-all hover:bg-gray-200"
-            onClick={() => setCount((count) => count + 1)}
-          >
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code className="text-[#8d96a7]">App.tsx</code> and save to test
-          HMR updates.
-        </p>
-        <p className="mt-3 flex gap-3 text-center text-[#8d96a7]">
-          <a
-            className="text-[#61dafb] transition-all hover:text-blue-400"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="text-[#61dafb] transition-all hover:text-blue-400"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div className="relative bg-[#011613] min-h-screen">
+      <Navigation />
+      <Hero />
+
+      {/* Second Section with Components */}
+      <section id="features" className="relative py-20 scroll-mt-20">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{ 
+            backgroundImage: 'radial-gradient(circle at 30% 20%, #72FF85 0%, transparent 50%), radial-gradient(circle at 70% 60%, #49EBF6 0%, transparent 50%)', 
+            filter: 'blur(100px)'
+          }}></div>
+        </div>
+
+        <div className="relative">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Stats />
+            <Activity />
+            <ActionButtons />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 };
