@@ -10,9 +10,10 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@tauri-apps/api": "^2.0.0"
+    "zustand": "5.0.3"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "1.5.0",
@@ -36,4 +37,4 @@
     "typescript": "5.0.4",
     "vite": "4.3.5"
   }
-} 
+}
