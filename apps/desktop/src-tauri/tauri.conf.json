@@ -20,7 +20,8 @@
         "resizable": true,
         "title": "CapIQ",
         "width": 800,
-        "visible": true
+        "visible": true,
+        "dragDropEnabled": false
       }
     ]
   },
@@ -56,6 +57,14 @@
       "certificateThumbprint": null,
       "digestAlgorithm": "sha256",
       "timestampUrl": ""
+    }
+  },
+  "plugins": {
+    "fs": {
+      "requireLiteralLeadingDot": true
+    },
+    "sql": {
+      "preload": ["sqlite:capteriq.db"]
     }
   }
 }

@@ -6,6 +6,7 @@ import {
   ArrowTopRightOnSquareIcon,
 } from '@heroicons/react/24/outline';
 import { useValidateApiKey } from '@/stores/authStore';
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 interface APIKeyStepProps {
   onSubmit: (apiKey: string) => void;
@@ -14,31 +15,35 @@ interface APIKeyStepProps {
 
 export const APIKeyStep = ({ onSubmit, onBack }: APIKeyStepProps) => {
   const [apiKey, setApiKey] = useState('');
-  const [isValidating, setIsValidating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
   const validateApiKey = useValidateApiKey();
 
   const handleSubmit = async () => {
-    const trimmedKey = apiKey.trim();
-    if (!trimmedKey) {
-      setError('Please enter an API key');
-      return;
-    }
+    if (!apiKey.trim()) return;
 
     setIsValidating(true);
     setError(null);
 
     try {
-      const isValid = await validateApiKey(trimmedKey);
+      const isValid = await validateApiKey(apiKey);
       if (isValid) {
-        onSubmit(trimmedKey);
+        onSubmit(apiKey);
       } else {
-        setError('Invalid OpenAI API key format');
+        setError('Invalid API key. Please check and try again.');
       }
     } catch (err) {
-      setError('Failed to validate API key');
+      setError('Failed to validate API key. Please try again.');
     } finally {
       setIsValidating(false);
+    }
+  };
+
+  const handleOpenUrl = async (url: string) => {
+    try {
+      await openUrl(url);
+    } catch (error) {
+      console.error('Failed to open URL:', error);
     }
   };
 
@@ -86,17 +91,14 @@ export const APIKeyStep = ({ onSubmit, onBack }: APIKeyStepProps) => {
           {error && <p className="text-sm text-red-500">{error}</p>}
         </div>
 
-        <motion.a
-          href="https://platform.openai.com/api-keys"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center space-x-1 text-sm 
-                     text-blue-500 hover:text-blue-600"
+        <motion.button
+          onClick={() => handleOpenUrl('https://platform.openai.com/api-keys')}
+          className="inline-flex items-center space-x-1 text-sm text-blue-500 hover:text-blue-600"
           whileHover={{ x: 2 }}
         >
           <span>Get an OpenAI API key</span>
           <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-        </motion.a>
+        </motion.button>
       </div>
 
       <div className="flex justify-between pt-6">

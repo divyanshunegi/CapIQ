@@ -1,4 +1,4 @@
-import { Sidebar } from '../components/Sidebar.tsx';
+import { Sidebar } from '../components/ui/Sidebar.tsx';
 import { Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
