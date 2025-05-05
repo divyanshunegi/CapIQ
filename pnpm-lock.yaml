@@ -35,9 +35,18 @@ importers:
       '@tauri-apps/plugin-fs':
         specifier: 2.2.0
         version: 2.2.0
+      '@tauri-apps/plugin-opener':
+        specifier: 2.2.6
+        version: 2.2.6
+      '@tauri-apps/plugin-sql':
+        specifier: 2.2.0
+        version: 2.2.0
       framer-motion:
         specifier: 12.5.0
         version: 12.5.0(react-dom@18.2.0)(react@18.2.0)
+      nanoid:
+        specifier: ^4.0.0
+        version: 4.0.2
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -1259,6 +1268,18 @@ packages:
 
   /@tauri-apps/plugin-fs@2.2.0:
     resolution: {integrity: sha512-+08mApuONKI8/sCNEZ6AR8vf5vI9DXD4YfrQ9NQmhRxYKMLVhRW164vdW5BSLmMpuevftpQ2FVoL9EFkfG9Z+g==}
+    dependencies:
+      '@tauri-apps/api': 2.3.0
+    dev: false
+
+  /@tauri-apps/plugin-opener@2.2.6:
+    resolution: {integrity: sha512-bSdkuP71ZQRepPOn8BOEdBKYJQvl6+jb160QtJX/i2H9BF6ZySY/kYljh76N2Ne5fJMQRge7rlKoStYQY5Jq1w==}
+    dependencies:
+      '@tauri-apps/api': 2.3.0
+    dev: false
+
+  /@tauri-apps/plugin-sql@2.2.0:
+    resolution: {integrity: sha512-yGdybpaMENe/p6lTXslvDHYNNvD9qB7palaBBF5fJHdYSkwd3vrLiYU9dFfLwUAwnsBylND55EiivWsjhazejA==}
     dependencies:
       '@tauri-apps/api': 2.3.0
     dev: false
@@ -4088,6 +4109,12 @@ packages:
     resolution: {integrity: sha512-SppoicMGpZvbF1l3z4x7No3OlIjP7QJvC9XR7AhZr1kL133KHnKPztkKDc+Ir4aJ/1VhTySrtKhrsycmrMQfvg==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid@4.0.2:
+    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
