@@ -8,6 +8,7 @@ import {
 import { Dashboard } from '@/pages/Dashboard';
 import { Onboarding } from '@/pages/Onboarding';
 import { Settings } from '@/pages/Settings';
+import { ProjectDetails } from '@/pages/ProjectDetails';
 import { AppLayout } from '@/layouts/AppLayout';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -33,6 +34,7 @@ function AppRouter() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="project/:projectId" element={<ProjectDetails />} />
           </Route>
         </Route>
       </Routes>
