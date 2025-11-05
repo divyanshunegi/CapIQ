@@ -23,6 +23,7 @@ interface DatabaseState {
   createProject: (project: Omit<Project, 'id'>) => Promise<void>;
   addFilesToProject: (files: Omit<ProjectFile, 'id'>[]) => Promise<void>;
   getProject: (projectId: string) => Promise<Project | null>;
+  getProjectFiles: (projectId: string) => Promise<ProjectFile[]>;
   getAllProjects: () => Promise<Project[]>;
   updateProjectStatus: (
     projectId: string,
@@ -215,6 +216,17 @@ export const useDatabaseStore = create<DatabaseState>((set, get) => ({
         [projectId],
       );
       return result.length > 0 ? result[0] : null;
+    });
+  },
+
+  getProjectFiles: async (projectId) => {
+    const db = await ensureDatabase(get().db);
+
+    return withRetry(async () => {
+      return await db.select<ProjectFile[]>(
+        'SELECT * FROM files WHERE project_id = $1 ORDER BY created_at DESC',
+        [projectId],
+      );
     });
   },
 

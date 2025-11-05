@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Butter-smooth anchor scrolling fallback */
+html { scroll-behavior: smooth; }
+
+/* Improve mobile spacing for sections/cards */
+.section-pad { padding-left: 1rem; padding-right: 1rem; }
+@media (min-width: 640px) {
+  .section-pad { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
