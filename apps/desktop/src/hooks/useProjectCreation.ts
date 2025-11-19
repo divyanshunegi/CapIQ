@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { open } from '@tauri-apps/plugin-dialog';
 import { readDir } from '@tauri-apps/plugin-fs';
-import { basename, dirname } from '@tauri-apps/api/path';
+import { basename, dirname, join } from '@tauri-apps/api/path';
 import { generateProjectId, sanitizeProjectName } from '@/utils/projectUtils';
 import { useDatabaseStore } from '@/stores/databaseStore';
 
@@ -67,9 +67,53 @@ export const useProjectCreation = () => {
   };
 
   const isVideoFile = (filename: string): boolean => {
-    const ext = filename.toLowerCase().slice(filename.lastIndexOf('.'));
+    const extIndex = filename.lastIndexOf('.');
+    if (extIndex === -1) {
+      return false;
+    }
+
+    const ext = filename.toLowerCase().slice(extIndex);
     return VIDEO_EXTENSIONS.includes(ext as (typeof VIDEO_EXTENSIONS)[number]);
   };
+
+  const collectDirectoryVideos = useCallback(
+    async (directoryPath: string, directoryName: string) => {
+      const collectedFiles: File[] = [];
+
+      const walk = async (currentPath: string, relativePrefix = '') => {
+        const entries = await readDir(currentPath);
+
+        await Promise.all(
+          entries.map(async (entry) => {
+            const relativePath = relativePrefix
+              ? `${relativePrefix}/${entry.name}`
+              : entry.name;
+
+            if (entry.isDirectory) {
+              const nestedPath = await join(currentPath, entry.name);
+              await walk(nestedPath, relativePath);
+              return;
+            }
+
+            if (!entry.isFile || !isVideoFile(entry.name)) {
+              return;
+            }
+
+            const file = new File([], entry.name, { type: 'video/*' });
+            Object.defineProperty(file, 'webkitRelativePath', {
+              value: `${directoryName}/${relativePath}`,
+              writable: false,
+            });
+            collectedFiles.push(file);
+          }),
+        );
+      };
+
+      await walk(directoryPath);
+      return collectedFiles;
+    },
+    [],
+  );
 
   const processFiles = useCallback(
     async (files: File[], directoryName?: string) => {
@@ -142,18 +186,11 @@ export const useProjectCreation = () => {
             directoryName = await basename(path);
             setState((prev) => ({ ...prev, selectedDirectory: path }));
 
-            const entries = await readDir(path, { recursive: true });
-            for (const entry of entries) {
-              if ('children' in entry || !isVideoFile(entry.name)) continue;
-
-              const relativePath = `${directoryName}/${entry.name}`;
-              const file = new File([], entry.name, { type: 'video/*' });
-              Object.defineProperty(file, 'webkitRelativePath', {
-                value: relativePath,
-                writable: false,
-              });
-              files.push(file);
-            }
+            const directoryFiles = await collectDirectoryVideos(
+              path,
+              directoryName,
+            );
+            files.push(...directoryFiles);
           } else if (isVideoFile(path)) {
             const fileName = await basename(path);
             files.push(new File([], fileName, { type: 'video/*' }));
