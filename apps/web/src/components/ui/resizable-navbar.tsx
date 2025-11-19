@@ -53,7 +53,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   // visible=true => shrunken/glassy state after scrolling a bit
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(scrollY, "change", (latest: number) => {
     setVisible(latest > 80);
   });
 
